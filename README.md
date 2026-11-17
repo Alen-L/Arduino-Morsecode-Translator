@@ -48,3 +48,4 @@ The development stages were originally created locally and later documented as i
 - Refine the timing and handling of spaces.
 - Review and simplify the program structure.
 - Explore additional input and output options.
+- Implement a Morse code receiver: Simulate communication between two Arduino boards in Tinkercad, allowing one board to transmit Morse code and the other to decode it into text. Explore LAN or Wi-Fi communication as a future extension.
