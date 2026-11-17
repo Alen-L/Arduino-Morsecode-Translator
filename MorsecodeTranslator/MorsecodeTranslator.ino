@@ -1,24 +1,54 @@
 // C++ code
 //
 
-char buchstaben[] = {'A','B','C','D','E','F'};  // Alphabet-Liste
-String morse[] = {".-","-...","-.-.", "-..", ".", "..-."};  //Morse-Zeichen-Liste
+char buchstaben[] = {'A','B','C','D','E','F'};  // Alphabet-Array
+String morse[] = {".-","-...","-.-.", "-..", ".", "..-."};  //Morse-Zeichen-Array
+
+
 
 void setup()
 {
   pinMode(8, OUTPUT);
+  Serial.begin(9600);  //legt die Übertragungsgeschwindigkeit in Baud fest (Bits pro Sekunde)
   
-  char gesucht = 'D';  //Gesuchter Buchstabe
-  int position = -1;  //setzt Position auf nicht vorhandene Index-Position um bei nicht-treffer keine falsche Ausgabe zu bekommen
+  char gesucht = 'D';  //gesuchter Buchstabe
+  int position = -1;  //setzt position auf nicht vorhandene Index-Position um später bei Nicht-Treffer Fehlermeldung ausgeben zu können
   
-  for (int i=0; i < 6; i++)  //Erstellt Variable i, durchläuft Liste bis Postion 6 erreicht ist, erhöht i bei jedem Durchlauf
+  for (int i=0; i < 6; i++)  //erstellt Variable i, durchläuft Positionen 0 - 5 bis i = 6 erreicht ist, erhöht i bei jedem Durchlauf
   {
-    if (buchstaben[i] == gesucht)  // sagt welche Liste und vergleicht Position mit gesuchtem Wert
+    if (buchstaben[i] == gesucht)  // bestimmt durchzulaufende Liste und vergleicht Buchstaben von aktueller Position mit gesuchtem Buchstaben
     {
-      position = i;  //Überschreibt i mit aktueller Position
+      position = i;  //Verändert Variable position mit der aktuellen Position i
+      break;  //beendet die for-Schleife bei Treffer
     }
   }
-    
+  
+  if (position != -1)
+  {
+    for (int i=0; i < morse[position].length(); i++)  //morse[position].length()bestimmt wie viele Morsezeichen durchlaufen werden müssen
+    {
+      if (morse[position][i] == '.') 
+      {
+        punkt();  //Führt Funktion punkt() aus wenn '.' 
+     
+      }
+      
+      else if (morse[position][i] == '-')
+      {
+        strich();  //führt Funktion strich() aus wenn '-'
+       
+      }
+      if (i< morse[position].length()-1)
+      {
+        delay(100);  //macht eine Pause von 100ms zwischen jedem Zeichen de Strings außer beim letzten Zeichen 
+      }
+      
+    }
+  }
+  else
+  {
+    Serial.println("Buchstabe nicht gefunden!");  //Gibt Fehlermeldung, falls postion -1 bleibt
+  }
 }
 
 void punkt() //der Punkt-Bestandteil des Buchstaben
@@ -35,34 +65,6 @@ void strich() //Strich-Bestandteil des Buchstaben
   digitalWrite(8,LOW);
 }
   
-void buchstabe_S()  //Buchstabe S
-{
-  for (int i=0; i<3; i++)
-  {
-    punkt();
-    
-    if (i < 2)
-    {
-      delay(100);
-    }
-   }
-}
-  
- 
-void buchstabe_O()  //Buchstabe O 
-{
-  for (int i=0; i<3; i++)
-  {
-    strich();
-    
-    if(i<2)
-    {
-      delay(100);
-    }
-  }
-}
- 
-
 
 void loop()
 {
